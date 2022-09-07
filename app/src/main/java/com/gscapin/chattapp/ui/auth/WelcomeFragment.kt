@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.gscapin.chattapp.R
 import com.gscapin.chattapp.databinding.FragmentWelcomeBinding
 
@@ -16,9 +17,19 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentWelcomeBinding.bind(view)
 
+        isUserLogged()
+
         goToCreateAccount()
 
         goToLogin()
+    }
+
+    private fun isUserLogged() {
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user != null) {
+            findNavController().navigate(R.id.action_welcomeFragment_to_contactsFragment)
+        }
     }
 
     private fun goToLogin() {

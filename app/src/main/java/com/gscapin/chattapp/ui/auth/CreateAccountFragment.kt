@@ -6,23 +6,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.gscapin.chattapp.R
+import com.gscapin.chattapp.core.Result
+import com.gscapin.chattapp.core.hide
+import com.gscapin.chattapp.core.show
 import com.gscapin.chattapp.databinding.FragmentCreateAccountBinding
+import com.gscapin.chattapp.presentation.auth.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
     private lateinit var binding: FragmentCreateAccountBinding
     var nickInputFill: Boolean = false
     var emailInputFill: Boolean = false
     var passwordInputFill: Boolean = false
     var verifyPasswordFill: Boolean = false
+
+    val viewModel: AuthViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCreateAccountBinding.bind(view)
-
-
 
         goToWelcomeScreen()
 
@@ -49,7 +60,22 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
             if (password != verifyPassword) {
                 binding.passwordInput.error = "The password must be equals."
             } else {
-                Log.d("account", "nick: $nickname, email: $email, password: $password")
+                viewModel.signUp(email, password, nickname).observe(viewLifecycleOwner, Observer { result ->
+                    when(result){
+                        is Result.Loading -> {
+                            binding.progressBarCreateAccount.show()
+                            binding.createAccountBtn.isEnabled = false
+                        }
+                        is Result.Success -> {
+                            binding.progressBarCreateAccount.hide()
+                            findNavController().navigate(R.id.action_createAccountFragment_to_contactsFragment)
+                        }
+                        is Result.Failure -> {
+                            binding.progressBarCreateAccount.show()
+                            Toast.makeText(requireContext(), "Error ${result.exception}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
             }
         }
     }

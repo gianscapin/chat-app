@@ -130,11 +130,22 @@
             android:imeOptions="actionDone" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_bar_create_account"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/create_account_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
+        android:visibility="gone"/>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/create_account_btn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:layout_marginHorizontal="30dp"
         android:text="CREATE ACCOUNT"
         app:layout_constraintEnd_toEndOf="parent"

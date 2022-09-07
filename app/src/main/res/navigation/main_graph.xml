@@ -15,15 +15,31 @@
         <action
             android:id="@+id/action_welcomeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
     </fragment>
     <fragment
         android:id="@+id/createAccountFragment"
         android:name="com.gscapin.chattapp.ui.auth.CreateAccountFragment"
         android:label="fragment_create_account"
-        tools:layout="@layout/fragment_create_account" />
+        tools:layout="@layout/fragment_create_account" >
+        <action
+            android:id="@+id/action_createAccountFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.gscapin.chattapp.ui.auth.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.gscapin.chattapp.ui.contacts.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts" />
 </navigation>

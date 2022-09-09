@@ -24,7 +24,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:title="Contacts"
-            app:titleTextAppearance="@style/TextAppearance.Material3.ActionBar.Title" />
+            android:elevation="10dp"
+            style="@style/Widget.Material3.Toolbar.OnSurface"
+            app:titleTextAppearance="@style/TextAppearance.Material3.LabelLarge"
+            />
 
         <ImageView
             android:id="@+id/logout_btn"
@@ -36,10 +39,19 @@
             app:layout_constraintEnd_toEndOf="@+id/toolbar"
             app:layout_constraintTop_toTopOf="@+id/toolbar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/progress_bar_contact"
+        android:layout_width="50dp"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <RelativeLayout
+        android:id="@+id/contacts"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_contacts"
             android:layout_width="match_parent"
@@ -49,7 +61,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/empty_contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:text="No hay mensajes creados, mandale mensaje a alguien!"
+            android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"

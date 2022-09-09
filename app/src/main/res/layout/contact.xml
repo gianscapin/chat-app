@@ -15,11 +15,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
-        style="@style/TextAppearance.Material3.HeadlineMedium"
+        android:id="@+id/name_contact"
+        style="@style/TextAppearance.Material3.TitleMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
         android:text="Contact"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,8 +29,8 @@
 
     <ImageView
         android:id="@+id/go_to_chat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_baseline_arrow_forward_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

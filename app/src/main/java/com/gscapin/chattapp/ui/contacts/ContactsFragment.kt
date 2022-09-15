@@ -14,6 +14,7 @@ import com.gscapin.chattapp.R
 import com.gscapin.chattapp.core.Result
 import com.gscapin.chattapp.core.hide
 import com.gscapin.chattapp.core.show
+import com.gscapin.chattapp.data.model.ContactMessage
 import com.gscapin.chattapp.data.model.User
 import com.gscapin.chattapp.databinding.FragmentContactsBinding
 import com.gscapin.chattapp.presentation.contact.ContactViewModel
@@ -70,7 +71,13 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
 
     }
 
-    override fun onContactBtnClick(user: User) {
-        TODO("Not yet implemented")
+    override fun onContactBtnClick(contact: ContactMessage) {
+        val action = ContactsFragmentDirections.actionContactsFragmentToChatFragment(
+            photoUser = contact.user!!.userPhotoUrl,
+            nameUser = contact.user.username,
+            idChat = contact.idMessage!!
+        )
+
+        findNavController().navigate(action)
     }
 }

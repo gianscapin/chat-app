@@ -45,5 +45,23 @@
         <action
             android:id="@+id/action_contactsFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment" />
+        <action
+            android:id="@+id/action_contactsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.gscapin.chattapp.ui.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="photoUser"
+            app:argType="string" />
+        <argument
+            android:name="nameUser"
+            app:argType="string" />
+        <argument
+            android:name="idChat"
+            app:argType="string" />
     </fragment>
 </navigation>

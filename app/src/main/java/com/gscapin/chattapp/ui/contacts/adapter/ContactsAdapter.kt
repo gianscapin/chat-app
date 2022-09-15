@@ -33,6 +33,13 @@ class ContactsAdapter(
         override fun bind(item: ContactMessage) {
             setImageContact(item)
             setNameContact(item)
+            clickContactAction(item)
+        }
+
+        private fun clickContactAction(item: ContactMessage) {
+            itemBinding.contactMessage.setOnClickListener {
+                contactClickListener?.onContactBtnClick(item)
+            }
         }
 
         private fun setNameContact(item: ContactMessage) {
@@ -55,5 +62,5 @@ class ContactsAdapter(
 }
 
 interface OnContactClickListener {
-    fun onContactBtnClick(user: User)
+    fun onContactBtnClick(contact: ContactMessage)
 }

@@ -74,10 +74,12 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_message"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionGo" />
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:imeOptions="actionDone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -86,7 +88,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginStart="15dp"
-            android:backgroundTint="@color/design_default_color_primary_variant"
+            android:backgroundTint="@color/design_default_color_primary"
             android:enabled="false"
             app:backgroundTint="@color/design_default_color_primary"
             app:icon="@drawable/ic_baseline_send_24"

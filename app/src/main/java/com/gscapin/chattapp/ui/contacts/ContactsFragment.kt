@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.gscapin.chattapp.R
 import com.gscapin.chattapp.core.Result
+import com.gscapin.chattapp.core.UsersModal
 import com.gscapin.chattapp.core.hide
 import com.gscapin.chattapp.core.show
 import com.gscapin.chattapp.data.model.ContactMessage
@@ -35,6 +36,10 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
         binding.logoutBtn.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             findNavController().navigate(R.id.action_contactsFragment_to_welcomeFragment)
+        }
+
+        binding.fabAdd.setOnClickListener {
+            showModal()
         }
 
         viewModel.getContactList().observe(viewLifecycleOwner, Observer { result ->
@@ -69,6 +74,11 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
             }
         })
 
+    }
+
+    fun showModal(){
+        val modalFragment = UsersModal()
+        activity?.let { modalFragment.show(it.supportFragmentManager, "MY_BOTTOM_SHEET") }
     }
 
     override fun onContactBtnClick(contact: ContactMessage) {

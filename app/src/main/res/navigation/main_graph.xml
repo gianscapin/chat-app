@@ -64,4 +64,12 @@
             android:name="idChat"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/usersModal"
+        android:name="com.gscapin.chattapp.core.UsersModal"
+        android:label="UsersModal" >
+        <action
+            android:id="@+id/action_usersModal_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </dialog>
 </navigation>

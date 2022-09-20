@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/message_user.xml" value="0.307" />
         <entry key="app/src/main/res/drawable/rectangle.xml" value="0.307" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28489583333333335" />
+        <entry key="app/src/main/res/layout/add_user_modal.xml" value="0.33" />
         <entry key="app/src/main/res/layout/contact.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.30052083333333335" />
         <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.3" />
@@ -13,6 +14,7 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3" />
         <entry key="app/src/main/res/layout/fragment_welcome.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/messages.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/user.xml" value="0.6687268232385661" />
       </map>
     </option>
   </component>

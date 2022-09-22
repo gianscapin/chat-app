@@ -9,4 +9,5 @@ interface ContactRepo {
     suspend fun getContactList(): List<ContactMessage>
     suspend fun getUsers(): List<User>
     suspend fun addChat(user: User): ContactMessage
+    suspend fun deleteChat(contactMessage: ContactMessage): Boolean
 }

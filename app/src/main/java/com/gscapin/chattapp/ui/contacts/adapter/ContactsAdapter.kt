@@ -2,6 +2,7 @@ package com.gscapin.chattapp.ui.contacts.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -40,6 +41,10 @@ class ContactsAdapter(
             itemBinding.contactMessage.setOnClickListener {
                 contactClickListener?.onContactBtnClick(item)
             }
+            itemBinding.contactMessage.setOnLongClickListener {
+                contactClickListener?.onLongPressBtnClick(item)
+                true
+            }
         }
 
         private fun setNameContact(item: ContactMessage) {
@@ -63,4 +68,5 @@ class ContactsAdapter(
 
 interface OnContactClickListener {
     fun onContactBtnClick(contact: ContactMessage)
+    fun onLongPressBtnClick(contact: ContactMessage)
 }

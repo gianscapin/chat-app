@@ -15,17 +15,19 @@ class ContactDatasource @Inject constructor() {
     suspend fun getContactListFromUser(): List<ContactMessage> {
         val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        val userFirebase =
-            FirebaseFirestore.getInstance().collection("users").document(currentUserId).get()
-                .await()
+        var list: MutableList<ContactMessage> = mutableListOf()
 
-        val user = userFirebase.toObject(User::class.java)
+        FirebaseFirestore.getInstance().collection("users").document(currentUserId)
+            .addSnapshotListener { snapshot, error ->
+                val listContacts: MutableList<ContactMessage> = mutableListOf()
+                val user = snapshot!!.toObject(User::class.java)
+                for (contact in user?.contacts!!) {
+                    listContacts.add(contact)
+                }
+                list = listContacts
+            }
 
-        return if (user!!.contacts?.isNotEmpty() == true) {
-            user.contacts!!
-        } else {
-            emptyList()
-        }
+        return list
     }
 
     suspend fun getUsers(): List<User> {
@@ -85,6 +87,13 @@ class ContactDatasource @Inject constructor() {
         myUserId: String?
     ) {
 
+        var userRequest: User? = getUser(user)
+
+        addContactToUser(myUser!!, user, chatId, myUserId)
+        addContactToUser(userRequest!!, myUser, chatId, userRequest?.id)
+    }
+
+    private suspend fun getUser(user: User): User? {
         val listUsers = FirebaseFirestore.getInstance().collection("users").get().await()
         var userRequest: User? = null
 
@@ -100,9 +109,7 @@ class ContactDatasource @Inject constructor() {
                 break
             }
         }
-
-        addContactToUser(myUser!!, user, chatId, myUserId)
-        addContactToUser(userRequest!!, myUser, chatId, userRequest?.id)
+        return userRequest
     }
 
     private suspend fun getNewChatId(
@@ -135,7 +142,8 @@ class ContactDatasource @Inject constructor() {
                 user = User(
                     username = user.username,
                     email = user.email,
-                    userPhotoUrl = user.userPhotoUrl
+                    userPhotoUrl = user.userPhotoUrl,
+                    id = userToAddContactsId
                 ), idMessage = chatId
             )
         )
@@ -145,5 +153,46 @@ class ContactDatasource @Inject constructor() {
         }
         FirebaseFirestore.getInstance().collection("users").document(userToAddContactsId!!)
             .set(userToAddContacts, SetOptions.merge()).await()
+    }
+
+
+    suspend fun deleteContact(contactMessage: ContactMessage): Boolean {
+
+        deleteChat(contactMessage)
+
+        var userRequest: User? = getUser(contactMessage.user!!)
+
+        var myUser = getMyUser()
+
+        updateContactList(userRequest, myUser!!)
+        updateContactList(myUser, contactMessage.user)
+
+        return true
+
+    }
+
+    private suspend fun updateContactList(
+        userRequest: User?,
+        user: User
+    ) {
+        val listContacts = userRequest?.contacts?.filterNot { it.user?.username == user.username }
+        userRequest.apply {
+            userRequest?.contacts = listContacts
+        }
+        FirebaseFirestore.getInstance().collection("users").document(userRequest?.id!!)
+            .set(userRequest, SetOptions.merge()).await()
+    }
+
+    private suspend fun getMyUser(): User? {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid
+        val myUserFirebase =
+            FirebaseFirestore.getInstance().collection("users").document(myUserId!!).get().await()
+
+        return myUserFirebase.toObject(User::class.java)
+    }
+
+    private suspend fun deleteChat(contactMessage: ContactMessage) {
+        val chatId = contactMessage.idMessage
+        FirebaseFirestore.getInstance().collection("chat").document(chatId!!).delete().await()
     }
 }

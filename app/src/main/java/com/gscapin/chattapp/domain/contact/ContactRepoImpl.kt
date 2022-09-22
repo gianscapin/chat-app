@@ -9,4 +9,5 @@ class ContactRepoImpl @Inject constructor(private val datasource: ContactDatasou
     override suspend fun getContactList() = datasource.getContactListFromUser()
     override suspend fun getUsers(): List<User> = datasource.getUsers()
     override suspend fun addChat(user: User): ContactMessage = datasource.createChat(user = user)
+    override suspend fun deleteChat(contactMessage: ContactMessage): Boolean = datasource.deleteContact(contactMessage)
 }

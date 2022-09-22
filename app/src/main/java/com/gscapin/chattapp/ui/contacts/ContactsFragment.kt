@@ -1,6 +1,8 @@
 package com.gscapin.chattapp.ui.contacts
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.gscapin.chattapp.R
 import com.gscapin.chattapp.core.Result
@@ -22,6 +26,8 @@ import com.gscapin.chattapp.presentation.contact.ContactViewModel
 import com.gscapin.chattapp.ui.contacts.adapter.ContactsAdapter
 import com.gscapin.chattapp.ui.contacts.adapter.OnContactClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickListener {
@@ -42,41 +48,48 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
             showModal()
         }
 
-        viewModel.getContactList().observe(viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is Result.Loading -> {
-                    binding.progressBarContact.show()
-                }
-                is Result.Success -> {
-                    binding.progressBarContact.hide()
-                    binding.contacts.show()
-                    if (result.data.isEmpty()) {
-                        binding.emptyContacts.show()
-                        binding.rvContacts.hide()
-                        return@Observer
-                    } else {
-                        binding.emptyContacts.hide()
-                        binding.rvContacts.show()
-                        binding.rvContacts.adapter = ContactsAdapter(
-                            result.data,
-                            this@ContactsFragment
-                        )
-                    }
-                }
-                is Result.Failure -> {
-                    binding.progressBarContact.hide()
-                    Toast.makeText(
-                        requireContext(),
-                        "Error ${result.exception}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        })
+        getContacts()
 
     }
 
-    fun showModal(){
+    private fun getContacts() {
+        viewModel.getContactList()
+        lifecycleScope.launchWhenCreated {
+            viewModel.getListContacts().collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        binding.progressBarContact.show()
+                    }
+                    is Result.Success -> {
+                        binding.progressBarContact.hide()
+                        binding.contacts.show()
+                        if (result.data.isEmpty()) {
+                            binding.emptyContacts.show()
+                            binding.rvContacts.hide()
+                            return@collect
+                        } else {
+                            binding.emptyContacts.hide()
+                            binding.rvContacts.show()
+                            binding.rvContacts.adapter = ContactsAdapter(
+                                result.data,
+                                this@ContactsFragment
+                            )
+                        }
+                    }
+                    is Result.Failure -> {
+                        binding.progressBarContact.hide()
+                        Toast.makeText(
+                            requireContext(),
+                            "Error ${result.exception}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
+    fun showModal() {
         val modalFragment = UsersModal()
         activity?.let { modalFragment.show(it.supportFragmentManager, "MY_BOTTOM_SHEET") }
     }
@@ -89,5 +102,35 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
         )
 
         findNavController().navigate(action)
+    }
+
+    override fun onLongPressBtnClick(contact: ContactMessage) {
+        context?.let { it1 ->
+            MaterialAlertDialogBuilder(it1).setMessage("Se eliminarán todos los mensajes.").setTitle("Desea eliminar el contacto?")
+                .setPositiveButton("Si", DialogInterface.OnClickListener { dialogInterface, i ->
+                    deleteContact(contact)
+                })
+                .setNegativeButton("No", null).show()
+        }
+
+    }
+
+    private fun deleteContact(contact: ContactMessage) {
+        lifecycleScope.launch {
+            viewModel.deleteChat(contact).observe(viewLifecycleOwner, Observer { result ->
+                when (result) {
+                    is Result.Loading -> {}
+                    is Result.Success -> {}
+                    is Result.Failure -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Error ${result.exception}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d("chat", "${result.exception}")
+                    }
+                }
+            })
+        }
     }
 }

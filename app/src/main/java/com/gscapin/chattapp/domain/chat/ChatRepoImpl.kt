@@ -7,4 +7,5 @@ import javax.inject.Inject
 class ChatRepoImpl @Inject constructor(private val datasource: ChatDatasource): ChatRepo {
     override suspend fun getMessages(idChat: String): List<Message> = datasource.getMessages(idChat)
     override suspend fun sendMessage(text: String, idChat: String) = datasource.sendMessage(text, idChat)
+    override suspend fun getLatestMessage(idChat: String): Message? = datasource.getLatestText(idChat)
 }

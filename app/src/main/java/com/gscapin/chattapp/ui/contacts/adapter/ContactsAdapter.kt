@@ -10,10 +10,12 @@ import com.gscapin.chattapp.core.BaseViewHolder
 import com.gscapin.chattapp.data.model.ContactMessage
 import com.gscapin.chattapp.data.model.User
 import com.gscapin.chattapp.databinding.ContactBinding
+import com.gscapin.chattapp.presentation.chat.ChatViewModel
 
 class ContactsAdapter(
     private val contactsList: List<ContactMessage>,
-    private val onContactClickListener: OnContactClickListener
+    private val onContactClickListener: OnContactClickListener,
+    private val viewModel: ChatViewModel
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private var contactClickListener: OnContactClickListener? = null
@@ -35,6 +37,12 @@ class ContactsAdapter(
             setImageContact(item)
             setNameContact(item)
             clickContactAction(item)
+            setMessage(item)
+        }
+
+        private fun setMessage(item: ContactMessage) {
+
+
         }
 
         private fun clickContactAction(item: ContactMessage) {

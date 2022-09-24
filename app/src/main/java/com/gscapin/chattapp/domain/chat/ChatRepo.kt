@@ -9,4 +9,5 @@ interface ChatRepo {
 
     suspend fun getMessages(idChat: String): List<Message>
     suspend fun sendMessage(text: String, idChat: String)
+    suspend fun getLatestMessage(idChat: String): Message?
 }

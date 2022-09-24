@@ -22,6 +22,7 @@ import com.gscapin.chattapp.core.show
 import com.gscapin.chattapp.data.model.ContactMessage
 import com.gscapin.chattapp.data.model.User
 import com.gscapin.chattapp.databinding.FragmentContactsBinding
+import com.gscapin.chattapp.presentation.chat.ChatViewModel
 import com.gscapin.chattapp.presentation.contact.ContactViewModel
 import com.gscapin.chattapp.ui.contacts.adapter.ContactsAdapter
 import com.gscapin.chattapp.ui.contacts.adapter.OnContactClickListener
@@ -35,21 +36,47 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
 
     val viewModel: ContactViewModel by viewModels()
 
+    val chatViewModel: ChatViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentContactsBinding.bind(view)
 
-        binding.logoutBtn.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            findNavController().navigate(R.id.action_contactsFragment_to_welcomeFragment)
-        }
+        logOut()
 
-        binding.fabAdd.setOnClickListener {
-            showModal()
-        }
+        settingsBtn()
+
+        fabAction()
 
         getContacts()
 
+    }
+
+    private fun fabAction() {
+        binding.fabAdd.setOnClickListener {
+            showModal()
+        }
+    }
+
+    private fun settingsBtn() {
+        binding.settingBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_contactsFragment_to_settingsFragment)
+        }
+    }
+
+    private fun logOut() {
+        binding.logOut.setOnClickListener {
+            Log.d("log out", "btn log out action")
+            context?.let { it1 ->
+                MaterialAlertDialogBuilder(it1).setTitle("Desea cerrar sesión?")
+                    .setPositiveButton("Si", DialogInterface.OnClickListener { dialogInterface, i ->
+                        FirebaseAuth.getInstance().signOut()
+                        findNavController().navigate(R.id.action_contactsFragment_to_welcomeFragment)
+                    })
+                    .setNegativeButton("No", null).show()
+            }
+
+        }
     }
 
     private fun getContacts() {
@@ -72,7 +99,8 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
                             binding.rvContacts.show()
                             binding.rvContacts.adapter = ContactsAdapter(
                                 result.data,
-                                this@ContactsFragment
+                                this@ContactsFragment,
+                                chatViewModel
                             )
                         }
                     }

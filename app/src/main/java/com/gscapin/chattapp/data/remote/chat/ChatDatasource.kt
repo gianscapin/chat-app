@@ -58,4 +58,18 @@ class ChatDatasource @Inject constructor() {
 
     }
 
+    suspend fun getLatestText(chatId: String): Message?{
+        val chat = FirebaseFirestore.getInstance().collection("chat").document(chatId).get().await()
+
+        val getChat = chat.toObject(Chat::class.java)
+
+        val messages = getChat?.text
+
+        return if(messages!!.isEmpty()){
+            null
+        }else{
+            getChat?.text?.last()
+        }
+    }
+
 }

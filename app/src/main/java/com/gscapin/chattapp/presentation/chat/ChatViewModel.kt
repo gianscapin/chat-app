@@ -29,6 +29,17 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepoImpl): V
         }
     }
 
+    fun getLatestMessage(idChat: String) = liveData(Dispatchers.IO) {
+        emit(Result.Loading())
+        kotlin.runCatching {
+            repository.getLatestMessage(idChat)
+        }.onSuccess {
+            emit(Result.Success(it))
+        }.onFailure {
+            emit(Result.Failure(Exception(it.message)))
+        }
+    }
+
     private fun getListToState(idChat: String) =
         FirebaseFirestore.getInstance().collection("chat").document(idChat)
             .addSnapshotListener { snapshot, e ->

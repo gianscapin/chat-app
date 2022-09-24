@@ -6,6 +6,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.gscapin.chattapp.data.model.Chat
 import com.gscapin.chattapp.data.model.ContactMessage
+import com.gscapin.chattapp.data.model.Message
 import com.gscapin.chattapp.data.model.User
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject

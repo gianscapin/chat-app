@@ -10,42 +10,50 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Contacts"
-            android:elevation="10dp"
-            style="@style/Widget.Material3.Toolbar.OnSurface"
-            app:titleTextAppearance="@style/TextAppearance.Material3.LabelLarge"
-            />
+            android:gravity="center"
+            app:title="Messages"
+            app:titleTextAppearance="@style/TextAppearance.Material3.ActionBar.Subtitle"
+            tools:ignore="MissingConstraints" />
 
         <ImageView
-            android:id="@+id/logout_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:id="@+id/setting_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_baseline_settings_24"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            app:layout_constraintEnd_toStartOf="@+id/log_out"
+            app:layout_constraintTop_toTopOf="@+id/toolbar"
+            app:tint="?android:attr/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/log_out"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/ic_baseline_logout_24"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintEnd_toEndOf="@+id/toolbar"
-            app:layout_constraintTop_toTopOf="@+id/toolbar" />
+            app:layout_constraintHorizontal_bias="0.918"
+            app:layout_constraintStart_toStartOf="@+id/toolbar"
+            app:layout_constraintTop_toTopOf="@+id/toolbar"
+            app:tint="?android:attr/colorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ProgressBar
         android:id="@+id/progress_bar_contact"
-        android:layout_width="50dp"
         style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/contacts"
@@ -57,22 +65,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/empty_contacts"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:gravity="center"
             android:text="No hay mensajes creados, mandale mensaje a alguien!"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
@@ -91,8 +99,6 @@
             app:rippleColor="@color/white"
             app:tint="@color/white" />
     </RelativeLayout>
-
-
 
 
 </LinearLayout>

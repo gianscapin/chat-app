@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gscapin.chattapp.core.Result
+import com.gscapin.chattapp.data.model.Chat
 import com.gscapin.chattapp.data.model.ContactMessage
+import com.gscapin.chattapp.data.model.Message
 import com.gscapin.chattapp.data.model.User
 import com.gscapin.chattapp.domain.contact.ContactRepoImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,6 +48,7 @@ class ContactViewModel @Inject constructor(private val repository: ContactRepoIm
     }
 
     fun getListContacts(): StateFlow<Result<List<ContactMessage>>> = contactsState
+
 
     fun getUsers() = liveData(Dispatchers.IO) {
         emit(Result.Loading())

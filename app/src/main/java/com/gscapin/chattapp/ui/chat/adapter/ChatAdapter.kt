@@ -3,16 +3,22 @@ package com.gscapin.chattapp.ui.chat.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.gscapin.chattapp.core.BaseViewHolder
 import com.gscapin.chattapp.core.show
 import com.gscapin.chattapp.data.model.Message
 import com.gscapin.chattapp.databinding.MessagesBinding
+import com.gscapin.chattapp.presentation.chat.ChatViewModel
+import com.gscapin.chattapp.presentation.contact.ContactViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 class ChatAdapter(
-    private val messageList: List<Message>
+    private val messageList: List<Message>,
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
             MessagesBinding.inflate(LayoutInflater.from(parent.context), parent, false)

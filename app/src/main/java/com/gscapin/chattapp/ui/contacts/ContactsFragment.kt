@@ -1,5 +1,6 @@
 package com.gscapin.chattapp.ui.contacts
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +43,15 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts), OnContactClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentContactsBinding.bind(view)
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val defaultValue = 0
+
+        if(sharedPref?.getInt("nightMode", defaultValue) == 1){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
 
         logOut()
 
